@@ -17,6 +17,11 @@ try:
 except Exception as e:
     errmsg += " binascii import error: "+str(e)
 
+try:
+    from datetime import datetime, timedelta
+    import time
+except Exception as e:
+    errmsg+= " datetime import error: "+str(e)
 
 tasmotaDebug = True
 
@@ -422,8 +427,11 @@ def t2d(attr, value, type, subtype):
 # Update a tasmota attributes value in its associated domoticz device idx
 def updateValue(idx, attr, value):
     nValue, sValue = t2d(attr, value, Devices[idx].Type, Devices[idx].SubType)
+    Debug(Devices[idx].LastUpdate)
+    lastupdate = datetime.fromtimestamp(time.mktime(time.strptime(Devices[idx].LastUpdate, '%Y-%m-%d %H:%M:%S')))
+    currenttime = datetime.now()
     if nValue != None and sValue != None:
-#        if Devices[idx].nValue != nValue or Devices[idx].sValue != sValue:
+        if Devices[idx].nValue != nValue or Devices[idx].sValue != sValue or currenttime - lastupdate > timedelta(minutes=59):
             Debug("tasmota::updateValue: Idx:{}, Attr: {}, nValue: {}, sValue: {}".format(
                 idx, attr, nValue, sValue))
             Devices[idx].Update(nValue=nValue, sValue=sValue)
