@@ -423,7 +423,7 @@ def t2d(attr, value, type, subtype):
 def updateValue(idx, attr, value):
     nValue, sValue = t2d(attr, value, Devices[idx].Type, Devices[idx].SubType)
     if nValue != None and sValue != None:
-        if Devices[idx].nValue != nValue or Devices[idx].sValue != sValue:
+#        if Devices[idx].nValue != nValue or Devices[idx].sValue != sValue:
             Debug("tasmota::updateValue: Idx:{}, Attr: {}, nValue: {}, sValue: {}".format(
                 idx, attr, nValue, sValue))
             Devices[idx].Update(nValue=nValue, sValue=sValue)
